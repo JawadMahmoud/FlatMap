@@ -1,27 +1,29 @@
 //var gpx_file = document.getElementById('gpx_file').files[0];
 //var url = "A.gpx";
-var url;
-var gpx;
+var url, url2;
+var gpx, gpx2;
 var file_name_ext, uploaded_file;
+var file_name_ext2, uploaded_file2;
 
-var plotcords;
-var elecords;
-var hrcords;
-var tempcords;
-var cadcords;
+var plotcords, plotcords2;
+var elecords, elecords2;
+var hrcords, hrcords2;
+var tempcords, tempcords2;
+var cadcords, cadcords2;
 
-var hrdata;
-var eledata;
-var tempdata;
-var caddata;
+var hrdata, hrdata2;
+var eledata, eledata2;
+var tempdata, tempdata2;
+var caddata, caddata2;
 
-var ele_min;
-var ele_max;
+var ele_min, ele_min2;
+var ele_max, ele_max2;
 
-var marker_list;
-var markers_layer;
+var marker_list, marker_list2;
+var markers_layer, markers_layer2;
 
 var eleHotlineLayer, hrHotlineLayer, cadHotlineLayer, tempHotlineLayer;
+var eleHotlineLayer2, hrHotlineLayer2, cadHotlineLayer2, tempHotlineLayer2;
 
 var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiamF3YWRzaGFoaWQiLCJhIjoiY2pvcm9nYWo0MGZ3ajNwcGhkdmZnejZvaSJ9.h72OiW0emxnrQTbNxEuj2Q', {
@@ -41,6 +43,7 @@ attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStree
     'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 id: 'mapbox.light'
 }).addTo(mymap2);
+var control2 = L.control.layers(null, null).addTo(mymap2);
 
 
 
@@ -48,6 +51,16 @@ document.getElementById('get_file').onclick = function() {
   document.getElementById('gpx_file').click();
   //display_gpx(document.getElementById('demo'));
 };
+
+document.getElementById('get_file2').onclick = function() {
+    document.getElementById('gpx_file2').click();
+    //display_gpx(document.getElementById('demo'));
+};
+
+document.getElementById('compare_button').onclick = function() {
+    compare_gpx(document.getElementById('compare'), gpx, gpx2)
+};
+
 
 $(document).ready(function(){
   $("#gpx_file").on('change', function(){
@@ -59,9 +72,23 @@ $(document).ready(function(){
     }
     console.log(file_name_ext);
 
-    remove_layer(gpx);
-    remove_layer(markers_layer);
+    remove_layer(gpx, mymap, control);
+    //remove_layer(markers_layer);
     display_gpx(document.getElementById('demo'));
+    //$.when( display_gpx(document.getElementById('demo')) ).done( draw_hotline_all() );
+  });
+  $("#gpx_file2").on('change', function(){
+    uploaded_file2 = document.getElementById('gpx_file2').value;
+    file_name_ext2 = uploaded_file2.split('.').pop().toLowerCase();
+    if ( 'gpx' !== file_name_ext2 ) {
+      alert("Incorrect file type, please upload a .gpx file");
+      return;
+    }
+    console.log(file_name_ext2);
+
+    remove_layer(gpx2, mymap2, control2);
+    //remove_layer(markers_layer);
+    display_gpx2(document.getElementById('demo2'));
     //$.when( display_gpx(document.getElementById('demo')) ).done( draw_hotline_all() );
   });
 });
@@ -86,7 +113,7 @@ function _c(c) { return elt.getElementsByClassName(c)[0]; }
 var new_gpx = new L.GPX(url, {
   async: true,
   polyline_options: {
-    color: 'MidnightBlue',
+    color: 'BlueViolet',
   },
   marker_options: {
     startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
@@ -143,6 +170,86 @@ var new_gpx = new L.GPX(url, {
 }).addTo(mymap);
 
 }
+
+
+function display_gpx2(elt) {
+
+    if (!elt) return;
+    
+    
+    url2 = document.getElementById('gpx_file2').files[0].name;
+    //console.log(url);
+    
+    //loadXMLDoc();
+    
+    function _t(t) { return elt.getElementsByTagName(t)[0]; }
+    function _c(c) { return elt.getElementsByClassName(c)[0]; }
+    
+    //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    
+    
+    var new_gpx = new L.GPX(url2, {
+      async: true,
+      polyline_options: {
+        color: 'MidnightBlue',
+      },
+      marker_options: {
+        startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
+        endIconUrl:   'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
+        //shadowUrl:    'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
+      },
+    }).on('loaded', function(e) {
+      gpx2 = e.target;
+      mymap2.fitBounds(gpx2.getBounds());
+      control2.addBaseLayer(gpx2, 'Simple line');
+    
+      //new_gpx.bindTooltip('bla')
+    
+    
+      /*
+       * Note: the code below relies on the fact that the demo GPX file is
+       * an actual GPS track with timing and heartrate information.
+       */
+      _c('title2').textContent = gpx2.get_name();
+      console.log(gpx2.get_moving_time());
+      _c('start2').textContent = gpx2.get_start_time().toDateString() + ', '
+        + gpx2.get_start_time().toLocaleTimeString();
+      _c('distance2').textContent = (gpx2.get_distance()/1000).toFixed(2);
+      _c('duration2').textContent = gpx2.get_duration_string(gpx2.get_moving_time());
+      _c('pace2').textContent     = gpx2.get_duration_string(gpx2.get_moving_pace(), true);
+      _c('speed2').textContent    = gpx2.get_moving_speed().toFixed(2);
+      _c('avghr2').textContent    = gpx2.get_average_hr();
+      _c('avgcad2').textContent   = gpx2.get_average_cadence();
+      _c('avgtemp2').textContent  = gpx2.get_average_temp();
+      _c('elevation-gain2').textContent = gpx2.get_elevation_gain().toFixed(0);
+      _c('elevation-loss2').textContent = gpx2.get_elevation_loss().toFixed(0);
+      _c('elevation-net2').textContent  = gpx2.get_elevation_gain().toFixed(2)
+        - gpx2.get_elevation_loss().toFixed(2);
+        //console.log("Heartrate Data:")
+        //console.log(gpx.get_heartrate_data());
+        //console.log("Elevation Data:")
+        //console.log(gpx.get_elevation_data());
+    
+        //loadXMLDoc();
+    
+        //console.log(gpx.get_elevation_max());
+        //console.log(gpx.get_elevation_min());
+    
+        hrdata2 = getCol(gpx.get_heartrate_data(), 1);
+        eledata2 = getCol(gpx.get_elevation_data(), 1);
+        tempdata2 = getCol(gpx.get_temp_data(), 1);
+        caddata2 = getCol(gpx.get_cadence_data(), 1);
+    
+        ele_min2 = gpx.get_elevation_min();
+        ele_max2 = gpx.get_elevation_max();
+        //console.log(eledata);
+    
+      loadXMLDoc2();
+    
+    }).addTo(mymap2);
+    
+}
+
 
 function draw_hotline_all() {
   remove_layer(hrHotlineLayer);
@@ -241,7 +348,7 @@ function loadXMLDoc() {
         };
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
-    }
+}
 
 function myFunction(xml) {
         var xmlDoc;
@@ -276,7 +383,54 @@ function myFunction(xml) {
         //console.log(ele_min);
         //console.log(ele_max);
 
-      }
+}
+
+
+function loadXMLDoc2() {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            myFunction(this);
+        }
+        };
+        xmlhttp.open("GET", url2, true);
+        xmlhttp.send();
+}
+
+function myFunction2(xml) {
+        var xmlDoc;
+        xmlDoc = xml.responseXML;
+
+        plotcords2 = [];
+        elecords2 = [];
+        hrcords2 = [];
+        tempcords2 = [];
+        cadcords2 = [];
+
+        plotpoints = xmlDoc.getElementsByTagName("trkpt");
+        //elelist = xmlDoc.getElementsByTagName("ele");
+        for (i = 0; i < plotpoints.length; i++) {
+            plotcords2.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon'))]);
+            elecords2.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon')), eledata2[i]]);
+            hrcords2.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon')), hrdata2[i]]);
+            if (tempdata2[i] != null) {
+              tempcords2.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon')), tempdata2[i]]);
+            }
+            if (caddata2[i] != null) {
+              cadcords2.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon')), caddata2[i]]);
+            }
+            
+        }
+        console.log(plotcords2);
+        console.log(elecords2);
+        console.log(hrcords2);
+        console.log(tempcords2);
+        console.log(cadcords2);
+
+        //console.log(ele_min);
+        //console.log(ele_max);
+
+}      
 
 function printcords(cords) {
 console.log("#2");
@@ -321,12 +475,69 @@ for (b = 0; b < plotcords.length; b += 10) {
 control.addOverlay(markers_layer, 'Markers').addTo(mymap);
 }
 
-function remove_layer(layer) {
+function remove_layer(layer, map, control) {
   if (layer != null) {
-    mymap.removeLayer(layer);
+    map.removeLayer(layer);
     control.removeLayer(layer);
   }
   
+}
+
+function compare_gpx(elt, gpx, gpx2) {
+    function _t(t) { return elt.getElementsByTagName(t)[0]; }
+    function _c(c) { return elt.getElementsByClassName(c)[0]; }
+
+    var cdistance1, cduration1, cspeed1, cheartrate1, ccadence1, ctemperature1, celevation1;
+    var cdistance2, cduration2, cspeed2, cheartrate2, ccadence2, ctemperature2, celevation2;
+    var cdistancetotal, cdurationtotal, cspeedtotal, cheartratetotal, ccadencetotal, ctemperaturetotal, celevationtotal;
+
+    
+
+    cdistancetotal = Number((gpx.get_distance()/1000).toFixed(2)) + Number((gpx2.get_distance()/1000).toFixed(2));
+    cdurationtotal = Number(gpx.get_moving_time()) + Number(gpx2.get_moving_time());
+    cspeedtotal = Number(gpx.get_moving_speed().toFixed(2)) + Number(gpx2.get_moving_speed().toFixed(2));
+    cheartratetotal = gpx.get_average_hr() + gpx2.get_average_hr();
+    ccadencetotal = gpx.get_average_cadence() + gpx2.get_average_cadence();
+    ctemperaturetotal = gpx.get_average_temp() + gpx2.get_average_temp();
+    celevationtotal = (gpx.get_elevation_gain().toFixed(2) - gpx.get_elevation_loss().toFixed(2)) + (gpx2.get_elevation_gain().toFixed(2) - gpx2.get_elevation_loss().toFixed(2));
+
+    cdistance1 = (gpx.get_distance()/1000).toFixed(2) / cdistancetotal;
+    cduration1 = gpx.get_moving_time() / cdurationtotal;
+    cspeed1 = gpx.get_moving_speed().toFixed(2) / cspeedtotal;
+    cheartrate1 = gpx.get_average_hr() / cheartratetotal;
+    ccadence1 = gpx.get_average_cadence() / ccadencetotal;
+    ctemperature1 = gpx.get_average_temp() / ctemperaturetotal;
+    celevation1 = (gpx.get_elevation_gain().toFixed(2) - gpx.get_elevation_loss().toFixed(2)) / celevationtotal;
+
+    cdistance2 = (gpx2.get_distance()/1000).toFixed(2) / cdistancetotal;
+    cduration2 = gpx2.get_moving_time() / cdurationtotal;
+    cspeed2 = gpx2.get_moving_speed().toFixed(2) / cspeedtotal;
+    cheartrate2 = gpx2.get_average_hr() / cheartratetotal;
+    ccadence2 = gpx2.get_average_cadence() / ccadencetotal;
+    ctemperature2 = gpx2.get_average_temp() / ctemperaturetotal;
+    celevation2 = (gpx2.get_elevation_gain().toFixed(2) - gpx2.get_elevation_loss().toFixed(2)) / celevationtotal;
+
+      _c('Comparison').innerHTML = 'Comparison';
+      //console.log(gpx2.get_moving_time());
+
+      _c('distance31').innerHTML = cdistance1;
+      console.log(cdistancetotal);
+      _c('duration31').innerHTML = cduration1;
+      _c('speed31').innerHTML    = cspeed1;
+      _c('avghr31').innerHTML    = cheartrate1;
+      _c('avgcad31').innerHTML   = ccadence1;
+      _c('avgtemp31').innerHTML  = ctemperature1;
+      _c('elevation-net31').innerHTML  = celevation1;
+
+      _c('distance32').innerHTML = cdistance2;
+      //console.log(cdistancetotal);
+      _c('duration32').innerHTML = cduration2;
+      _c('speed32').innerHTML    = cspeed2;
+      _c('avghr32').innerHTML    = cheartrate2;
+      _c('avgcad32').innerHTML   = ccadence2;
+      _c('avgtemp32').innerHTML  = ctemperature2;
+      _c('elevation-net32').innerHTML  = celevation2;
+
 }
 
 //$.when(display_gpx(document.getElementById('demo'))).then(draw_hotline_all());

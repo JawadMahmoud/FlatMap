@@ -61,11 +61,13 @@
               Remove Layer
             </button>
             </td>
+
+
             <td>
                 <section id="demo2" class="gpx">
                     <header>
-                      <h3></h3>
-                      <span class="start"></span>
+                      <h3 class="title2"></h3>
+                      <span class="start2"></span>
                     </header>
               
                     <article>
@@ -74,22 +76,22 @@
               
                     <footer>
                       <ul class="info">
-                        <li>Distance:&nbsp;<span class="distance"></span>&nbsp;km</li>
-                        &mdash; <li>Duration:&nbsp;<span class="duration"></span></li>
-                        &mdash; <li>Pace:&nbsp;<span class="pace"></span>/km</li>
-                        &mdash; <li>Speed:&nbsp;<span class="speed"></span> km/hr</li>
-                        &mdash; <li>Avg&nbsp;HR:&nbsp;<span class="avghr"></span>&nbsp;bpm</li>
-                        &mdash; <li>Avg&nbsp;Cadence:&nbsp;<span class="avgcad"></span>&nbsp;cad</li>
-                        &mdash; <li>Avg&nbsp;Temperature:&nbsp;<span class="avgtemp"></span>&nbsp;Celsius</li>
-                        &mdash; <li>Elevation:&nbsp;+<span class="elevation-gain"></span>&nbsp;m,
-                          -<span class="elevation-loss"></span>&nbsp;m
-                          (net:&nbsp;<span class="elevation-net"></span>&nbsp;m)</li>
+                        <li>Distance:&nbsp;<span class="distance2"></span>&nbsp;km</li>
+                        &mdash; <li>Duration:&nbsp;<span class="duration2"></span></li>
+                        &mdash; <li>Pace:&nbsp;<span class="pace2"></span>/km</li>
+                        &mdash; <li>Speed:&nbsp;<span class="speed2"></span> km/hr</li>
+                        &mdash; <li>Avg&nbsp;HR:&nbsp;<span class="avghr2"></span>&nbsp;bpm</li>
+                        &mdash; <li>Avg&nbsp;Cadence:&nbsp;<span class="avgcad2"></span>&nbsp;cad</li>
+                        &mdash; <li>Avg&nbsp;Temperature:&nbsp;<span class="avgtemp2"></span>&nbsp;Celsius</li>
+                        &mdash; <li>Elevation:&nbsp;+<span class="elevation-gain2"></span>&nbsp;m,
+                          -<span class="elevation-loss2"></span>&nbsp;m
+                          (net:&nbsp;<span class="elevation-net2"></span>&nbsp;m)</li>
                       </ul>
                     </footer>
             </section>
         
-            <input type="button" id="get_file" value="Import & Plot">
-            <input type="file" id="gpx_file" accept=".gpx">
+            <input type="button" id="get_file2" value="Import & Plot">
+            <input type="file" id="gpx_file2" accept=".gpx">
         
             <button type="button" onclick="draw_hotline_all()">
               All Layers
@@ -105,6 +107,29 @@
             </td>
         </tr>
     </table>
+
+
+    <section id="compare" class="gpx">
+        <header>
+          <h3 class="Comparison"></h3>
+        </header>
+  
+        <footer>
+          <ul class="info">
+            <li>Distance:&nbsp;<span class="distance31"></span>&nbsp;<span class="distance32"></span></li>
+            &mdash; <li>Duration:&nbsp;<span class="duration31"></span>&nbsp;<span class="duration32"></span></li>
+            &mdash; <li>Speed:&nbsp;<span class="speed31"></span>&nbsp;<span class="speed32"></span></li>
+            &mdash; <li>Avg&nbsp;HR:&nbsp;<span class="avghr31"></span>&nbsp;<span class="avghr32"></span></li>
+            &mdash; <li>Avg&nbsp;Cadence:&nbsp;<span class="avgcad31"></span>&nbsp;<span class="avgcad32"></span></li>
+            &mdash; <li>Avg&nbsp;Temperature:&nbsp;<span class="avgtemp31"></span>&nbsp;<span class="avgtemp32"></span></li>
+            &mdash; <li>Elevation:&nbsp;<span class="elevation-net31"></span>&nbsp;<span class="elevation-net32"></span></li>
+          </ul>
+        </footer>
+    </section>
+
+    <button type="button" id="compare_button">
+        Compare
+    </button>
     
 
 

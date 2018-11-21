@@ -94,7 +94,7 @@ var new_gpx = new L.GPX(url, {
    * Note: the code below relies on the fact that the demo GPX file is
    * an actual GPS track with timing and heartrate information.
    */
-  _t('h3').textContent = gpx.get_name();
+  _c('title').textContent = gpx.get_name();
   _c('start').textContent = gpx.get_start_time().toDateString() + ', '
     + gpx.get_start_time().toLocaleTimeString();
   _c('distance').textContent = (gpx.get_distance()/1000).toFixed(2);
