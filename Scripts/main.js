@@ -1,5 +1,8 @@
-var url = "A.gpx";
+//var gpx_file = document.getElementById('gpx_file').files[0];
+//var url = "A.gpx";
+var url;
 var gpx;
+var file_name_ext, uploaded_file;
 
 var plotcords;
 var elecords;
@@ -16,13 +19,50 @@ var ele_min;
 var ele_max;
 
 var marker_list;
+var markers_layer;
+
+var eleHotlineLayer, hrHotlineLayer, cadHotlineLayer, tempHotlineLayer;
 
 var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiamF3YWRzaGFoaWQiLCJhIjoiY2puZzQ0eno3MDRjbDNrcWlsZjZxNTcxaSJ9.mavbvckNOMnntmxWcKboyQ', {
+maxZoom: 18,
+attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+id: 'mapbox.light'
+}).addTo(mymap);
 var control = L.control.layers(null, null).addTo(mymap);
+
+document.getElementById('get_file').onclick = function() {
+  document.getElementById('gpx_file').click();
+  //display_gpx(document.getElementById('demo'));
+};
+
+$(document).ready(function(){
+  $("#gpx_file").on('change', function(){
+    uploaded_file = document.getElementById('gpx_file').value;
+    file_name_ext = uploaded_file.split('.').pop().toLowerCase();
+    if ( 'gpx' !== file_name_ext ) {
+      alert("Incorrect file type, please upload a .gpx file");
+      return;
+    }
+    console.log(file_name_ext);
+
+    remove_layer(gpx);
+    remove_layer(markers_layer);
+    display_gpx(document.getElementById('demo'));
+    //$.when( display_gpx(document.getElementById('demo')) ).done( draw_hotline_all() );
+  });
+});
 
 
 function display_gpx(elt) {
+
 if (!elt) return;
+
+
+url = document.getElementById('gpx_file').files[0].name;
+//console.log(url);
 
 //loadXMLDoc();
 
@@ -31,19 +71,11 @@ function _c(c) { return elt.getElementsByClassName(c)[0]; }
 
 //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiamF3YWRzaGFoaWQiLCJhIjoiY2puZzQ0eno3MDRjbDNrcWlsZjZxNTcxaSJ9.mavbvckNOMnntmxWcKboyQ', {
-maxZoom: 18,
-attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-id: 'mapbox.light'
-}).addTo(mymap);
 
-
-new L.GPX(url, {
+var new_gpx = new L.GPX(url, {
   async: true,
   polyline_options: {
-    color: 'purple',
+    color: 'MidnightBlue',
   },
   marker_options: {
     startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
@@ -54,6 +86,8 @@ new L.GPX(url, {
   gpx = e.target;
   mymap.fitBounds(gpx.getBounds());
   control.addBaseLayer(gpx, 'Simple line');
+
+  //new_gpx.bindTooltip('bla')
 
 
   /*
@@ -100,14 +134,27 @@ new L.GPX(url, {
 }
 
 function draw_hotline_all() {
-draw_hotline_ele();
-draw_hotline_hr();
-draw_hotline_temp();
-draw_hotline_cad();
+  remove_layer(hrHotlineLayer);
+  remove_layer(eleHotlineLayer);
+  remove_layer(tempHotlineLayer);
+  remove_layer(cadHotlineLayer);
+  if (hrcords.length != 0) {
+    draw_hotline_hr();
+  }
+  if (elecords.length != 0) {
+    draw_hotline_ele();
+  }
+  if (tempcords.length != 0) {
+    draw_hotline_temp();
+  }
+  if (cadcords.length != 0) {
+    draw_hotline_cad();
+  }
+  
 }
 
 function draw_hotline_ele() {
-var eleHotlineLayer = L.hotline(elecords, {
+eleHotlineLayer = L.hotline(elecords, {
         min: ele_min,
         max: ele_max,
         palette: {
@@ -119,12 +166,13 @@ var eleHotlineLayer = L.hotline(elecords, {
         outlineColor: '#000000',
         outlineWidth: 1
 })
+//control.removeLayer(eleHotlineLayer).addTo(mymap);
 control.addBaseLayer(eleHotlineLayer, 'Elevation Line').addTo(mymap);
 }
 
 function draw_hotline_hr() {
-var hrHotlineLayer = L.hotline(hrcords, {
-        min: 50,
+hrHotlineLayer = L.hotline(hrcords, {
+        min: 90,
         max: 200,
         palette: {
             0.0: '#41ead4',
@@ -135,11 +183,12 @@ var hrHotlineLayer = L.hotline(hrcords, {
         outlineColor: '#000000',
         outlineWidth: 1
 })
+//control.removeLayer(hrHotlineLayer).addTo(mymap);
 control.addBaseLayer(hrHotlineLayer, 'HeartRate Line').addTo(mymap);
 }
 
 function draw_hotline_temp() {
-var tempHotlineLayer = L.hotline(tempcords, {
+tempHotlineLayer = L.hotline(tempcords, {
         min: 20,
         max: 40,
         palette: {
@@ -151,11 +200,12 @@ var tempHotlineLayer = L.hotline(tempcords, {
         outlineColor: '#000000',
         outlineWidth: 1
 })
+//control.removeLayer(tempHotlineLayer).addTo(mymap);
 control.addBaseLayer(tempHotlineLayer, 'Temperature Line').addTo(mymap);
 }
 
 function draw_hotline_cad() {
-var cadHotlineLayer = L.hotline(cadcords, {
+cadHotlineLayer = L.hotline(cadcords, {
         min: 0,
         max: 100,
         palette: {
@@ -167,6 +217,7 @@ var cadHotlineLayer = L.hotline(cadcords, {
         outlineColor: '#000000',
         outlineWidth: 1
 })
+//control.removeLayer(cadHotlineLayer).addTo(mymap);
 control.addBaseLayer(cadHotlineLayer, 'Cadence Line').addTo(mymap);
 }
 
@@ -200,7 +251,10 @@ function myFunction(xml) {
             if (tempdata[i] != null) {
               tempcords.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon')), tempdata[i]]);
             }
-            cadcords.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon')), caddata[i]]);
+            if (caddata[i] != null) {
+              cadcords.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon')), caddata[i]]);
+            }
+            
         }
         console.log(plotcords);
         console.log(elecords);
@@ -236,14 +290,19 @@ return x < 50     ?    '#bd0026':
 
 
 function draw_markers() {
-var markers_layer = L.layerGroup([]);
+markers_layer = L.layerGroup([]);
 
-for (b = 0; b < plotcords.length; b += 25) {
-  var firstmarker = L.marker(plotcords[b], { riseOnHover : 'true' }).addTo(mymap);
-  firstmarker.bindPopup("<b>Elevation: </b>" + eledata[b].toFixed(2) + "<br />" +
+for (b = 0; b < plotcords.length; b += 10) {
+  var firstmarker = L.marker(plotcords[b], { riseOnHover : 'true', 
+  icon : L.icon({ iconUrl : 'Icons/blank2.png', iconSize : [5,5], iconAnchor : [2.5,5]})
+  }).addTo(mymap);
+
+  firstmarker.bindTooltip(
+  "<b>Elevation: </b>" + eledata[b].toFixed(2) + "<br />" +
   "<b>Heart Rate: </b>" + hrdata[b].toFixed(2) + "<br />" +
   "<b>Temperature: </b>" + tempdata[b] + "<br />" +
-  "<b>Cadence: </b>" + caddata[b] + "<br />");
+  "<b>Cadence: </b>" + caddata[b] + "<br />"
+  );
 
   markers_layer.addLayer(firstmarker);
 }
@@ -251,8 +310,15 @@ for (b = 0; b < plotcords.length; b += 25) {
 control.addOverlay(markers_layer, 'Markers').addTo(mymap);
 }
 
+function remove_layer(layer) {
+  if (layer != null) {
+    mymap.removeLayer(layer);
+    control.removeLayer(layer);
+  }
+  
+}
 
 //$.when(display_gpx(document.getElementById('demo'))).then(draw_hotline_all());
-display_gpx(document.getElementById('demo'));
+//display_gpx(document.getElementById('demo'));
 //draw_hotline_all();
 //display_gpx(document.getElementById('demo')).pipe(draw_hotline_all());

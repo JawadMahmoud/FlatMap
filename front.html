@@ -5,12 +5,13 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
 
 <body>
@@ -18,7 +19,7 @@
 
     <section id="demo" class="gpx">
             <header>
-              <h3>Loading...</h3>
+              <h3></h3>
               <span class="start"></span>
             </header>
       
@@ -42,12 +43,19 @@
             </footer>
     </section>
 
+    <input type="button" id="get_file" value="Import & Plot">
+    <input type="file" id="gpx_file" accept=".gpx">
+
     <button type="button" onclick="draw_hotline_all()">
       All Layers
     </button>
 
     <button type="button" onclick="draw_markers()">
       All Markers
+    </button>
+
+    <button type="button" onclick="remove_layer(eleHotlineLayer)">
+      Remove Layer
     </button>
 
 
