@@ -5,19 +5,279 @@
 <html>
 
 <head>
-    
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" >
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
 
 <body>
     
 
-    <section id="demo" class="gpx">
+  <div class="page-header text-center">
+    <h1>FlatMap</h1>
+  </div>
+
+
+
+<section class="text-center">
+    <div class="container">  
+      <p>
+        <a href="front.html" class="btn btn-primary my-2" style="width: 130px">Single</a>
+        <a href="compare.html" class="btn btn-primary my-2" style="width: 130px">Compare</a><br>
+        <button type="button" class="btn btn-outline-warning" style="width: 130px" onclick="draw_hotline_all()" id="All-layers-button">All Layers</button>
+        <button type="button" id="get_file" class="btn btn-outline-primary" style="width: 130px">Import & Plot</button>
+        <input type="file" id="gpx_file" accept=".gpx">
+        <button type="button" class="btn btn-outline-primary" style="width: 130px"id="chart_file">Chart</button>
+        <button type="button" class="btn btn-outline-warning" style="width: 130px" onclick="draw_markers()" id="All-markers-button">All Markers</button>
+      </p>
+    </div>
+  </section>
+
+
+<section class="text-center" style="padding-bottom: 20px">  
+    <div class="btn-group">
+      <button class="button" style="width: 130px">Running</button>
+      <button class="button" style="width: 130px">Cycling</button>
+      <button class="button" style="width: 130px">Hiking</button>
+    </div>
+</section>
+
+
+<!-- <div class="container-fluid">
+<div class="jumbotron p-1 p-md-2 text-white rounded bg-dark text-center">
+ 
+        <div class="row" style="height:30pt">
+
+            <div class="col-md-4" >
+                <a class="toggle">Heart Rate</a>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+
+            </div>
+
+            <div class="col-md-4">
+                <a class="toggle">Cadence</a>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="col-md-4">
+                <a class="toggle">Elevation</a>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+ 
+        <div class="row" style="height:30pt">
+            <div class="col-md-4" style="padding-left: 68px">
+                <a class="toggle">Pace</a>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="col-md-4" style="padding-left: 16px">
+                <a class="toggle">Distance</a>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+            </div>
+                
+            <div class="col-md-4" style="padding-left: 52px">
+                <a class="toggle">Time</a>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+      
+    </div>
+  </div> -->
+
+  <section id="demo">
+  <div class="container-fluid">
+    <div class="row" style="height:500pt">
+
+    <div class="col-3">
+      <div class="container" style="height:500pt">
+      <div class="card mb-2 shadow-sm" style="background-color:#E8E7EF; width: 100%; height: 100%">
+        <div class="card-body">
+          <div class="card-text">
+            <div class="row">
+              <div class="col-4" style="text-align: center">
+                  <a class="toggle">Heart Rate</a>
+                  <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+              </div>
+              <div class="col-4" style="text-align: center">
+                  <a class="toggle">Cadence</a>
+                  <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+              </div>
+              <div class="col-4" style="text-align: center">
+                  <a class="toggle">Elevation</a>
+                  <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+              </div>
+            </div>
+          <div class="container" style="padding-top: 4%">
+            <div class="row">
+              <div class="col-8" style="text-align: right; padding-top: 6%">
+                <h3>Heart Rate</h3>
+                <span class="avghr"></span>&nbsp;bpm
+              </div>
+              <div class="col-4">
+                  <img src="https://image.flaticon.com/icons/svg/210/210521.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px;">
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-8" style="text-align: right; padding-top: 6%">
+                    <h3>Cadence</h3>
+                    <span class="avgcad"></span>&nbsp;cad
+                </div>
+                <div class="col-4">
+                  <img src="https://image.flaticon.com/icons/svg/670/670750.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8" style="text-align: right; padding-top: 6%">
+                    <h3>Elevation</h3>
+                    <span class="elevation-net"></span>&nbsp;m
+                </div>
+                <div class="col-4">
+                  <img src="https://image.flaticon.com/icons/svg/1180/1180411.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
+                </div>
+            </div>
+            <div class="row">
+                <canvas id="myChart1" width="400" height="150"></canvas>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="card mb-2 shadow-sm" style="background-color:rgb(46, 46, 49); width: 100%; height: 500pt">
+        <div class="card-body">
+          <div id="mapid" style="width: 100%; height: 100%;"></div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="col-3">
+      <div class="container" style="height:500pt">
+        <div class="card mb-2 shadow-sm" style="background-color:#E8E7EF; width: 100%; height: 100%">
+          <div class="card-body">
+            <div class="card-text">
+                <div class="row">
+                    <div class="col-4" style="text-align: center">
+                        <a class="toggle">Speed</a>
+                        <label class="switch">
+                          <input type="checkbox">
+                          <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="col-4" style="text-align: center">
+                        <a class="toggle">Distance</a>
+                        <label class="switch">
+                          <input type="checkbox">
+                          <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="col-4" style="text-align: center">
+                        <a class="toggle">Duration</a>
+                        <label class="switch">
+                          <input type="checkbox">
+                          <span class="slider"></span>
+                        </label>
+                    </div>
+                  </div>
+            <div class="container" style="padding-top: 4%">
+              <div class="row">
+                <div class="col-4">
+                    <img src="https://image.flaticon.com/icons/svg/763/763965.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
+                </div>
+                <div class="col-8" style="text-align: left; padding-top: 6%">
+                    <h3>Speed</h3>
+                    <span class="speed"></span>&nbsp;km/hr
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-4">
+                      <img src="https://image.flaticon.com/icons/svg/55/55212.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
+                  </div>
+                  <div class="col-8" style="text-align: left; padding-top: 6%">
+                      <h3>Distance</h3>
+                      <span class="distance"></span>&nbsp;km
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-4">
+                      <img src="https://image.flaticon.com/icons/svg/149/149318.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
+                  </div>
+                  <div class="col-8" style="text-align: left; padding-top: 6%">
+                      <h3>Duration</h3>
+                      <span class="duration"></span>&nbsp;
+                  </div>
+              </div>
+            </div>
+            <div class="row">
+                <canvas id="myChart2" width="400" height="150"></canvas>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+
+
+  </div>
+
+
+</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <section id="demo" class="gpx">
             <header>
               <h3 class="title"></h3>
               <span class="start"></span>
@@ -52,7 +312,16 @@
 
     <button type="button" onclick="draw_markers()">
       All Markers
-    </button>
+    </button> -->
+
+
+
+
+
+
+
+
+
 
 
 <!-- <script src="https://rawgithub.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script> -->

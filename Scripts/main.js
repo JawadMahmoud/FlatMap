@@ -9,6 +9,7 @@ var elecords;
 var hrcords;
 var tempcords;
 var cadcords;
+var timecords;
 
 var hrdata;
 var eledata;
@@ -38,6 +39,11 @@ document.getElementById('get_file').onclick = function() {
   //display_gpx(document.getElementById('demo'));
 };
 
+document.getElementById('chart_file').onclick = function() {
+  display_chart(timecords, eledata, 'Elevation', 'myChart1');
+  display_chart(timecords, hrdata, 'HeartRate', 'myChart2');
+};
+
 $(document).ready(function(){
   $("#gpx_file").on('change', function(){
     uploaded_file = document.getElementById('gpx_file').value;
@@ -49,11 +55,11 @@ $(document).ready(function(){
     console.log(file_name_ext);
 
     remove_layer(gpx);
+    remove_layer(markers_layer);
     remove_layer(hrHotlineLayer);
     remove_layer(eleHotlineLayer);
     remove_layer(tempHotlineLayer);
     remove_layer(cadHotlineLayer);
-    remove_layer(markers_layer);
     display_gpx(document.getElementById('demo'));
     //$.when( display_gpx(document.getElementById('demo')) ).done( draw_hotline_all() );
   });
@@ -72,6 +78,7 @@ url = document.getElementById('gpx_file').files[0].name;
 
 function _t(t) { return elt.getElementsByTagName(t)[0]; }
 function _c(c) { return elt.getElementsByClassName(c)[0]; }
+function _i(i) { return elt.getElementById(i); }
 
 //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 
@@ -98,20 +105,18 @@ var new_gpx = new L.GPX(url, {
    * Note: the code below relies on the fact that the demo GPX file is
    * an actual GPS track with timing and heartrate information.
    */
-  _c('title').textContent = gpx.get_name();
-  _c('start').textContent = gpx.get_start_time().toDateString() + ', '
-    + gpx.get_start_time().toLocaleTimeString();
+  //_c('title').textContent = gpx.get_name();
+  //_c('start').textContent = gpx.get_start_time().toDateString() + ', ' + gpx.get_start_time().toLocaleTimeString();
   _c('distance').textContent = (gpx.get_distance()/1000).toFixed(2);
   _c('duration').textContent = gpx.get_duration_string(gpx.get_moving_time());
-  _c('pace').textContent     = gpx.get_duration_string(gpx.get_moving_pace(), true);
+  //_c('pace').textContent     = gpx.get_duration_string(gpx.get_moving_pace(), true);
   _c('speed').textContent    = gpx.get_moving_speed().toFixed(2);
   _c('avghr').textContent    = gpx.get_average_hr();
   _c('avgcad').textContent   = gpx.get_average_cadence();
-  _c('avgtemp').textContent  = gpx.get_average_temp();
-  _c('elevation-gain').textContent = gpx.get_elevation_gain().toFixed(0);
-  _c('elevation-loss').textContent = gpx.get_elevation_loss().toFixed(0);
-  _c('elevation-net').textContent  = gpx.get_elevation_gain()
-    - gpx.get_elevation_loss().toFixed(0);
+  //_c('avgtemp').textContent  = gpx.get_average_temp();
+  //_c('elevation-gain').textContent = gpx.get_elevation_gain().toFixed(0);
+  //_c('elevation-loss').textContent = gpx.get_elevation_loss().toFixed(0);
+  _c('elevation-net').textContent  = (gpx.get_elevation_gain() - gpx.get_elevation_loss().toFixed(0)).toFixed(2);
     //console.log("Heartrate Data:")
     //console.log(gpx.get_heartrate_data());
     //console.log("Elevation Data:")
@@ -245,8 +250,11 @@ function myFunction(xml) {
         hrcords = [];
         tempcords = [];
         cadcords = [];
+        timecords = [];
+        
 
         plotpoints = xmlDoc.getElementsByTagName("trkpt");
+        timepoins = xmlDoc.getElementsByTagName("time");
         //elelist = xmlDoc.getElementsByTagName("ele");
         for (i = 0; i < plotpoints.length; i++) {
             plotcords.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon'))]);
@@ -258,9 +266,14 @@ function myFunction(xml) {
             if (caddata[i] != null) {
               cadcords.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon')), caddata[i]]);
             }
+            timecords.push((timepoins[i].childNodes[0].nodeValue).substring(11,19))
             
         }
+
+        
+
         console.log(plotcords);
+        console.log(timecords);
         console.log(elecords);
         console.log(hrcords);
         console.log(tempcords);
@@ -320,6 +333,38 @@ function remove_layer(layer) {
     control.removeLayer(layer);
   }
   
+}
+
+
+function display_chart(inlabels, indata, inchartlabel, inelement) {
+  console.log(indata);
+  console.log(inlabels);
+  var ctx = document.getElementById(inelement).getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: inlabels,
+        datasets: [{
+            //label: '# of Votes',
+            label: inchartlabel,
+            data: indata,
+            fill: false,
+            borderColor: 'red',
+            backgroundColor: 'red',
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
 }
 
 //$.when(display_gpx(document.getElementById('demo'))).then(draw_hotline_all());
