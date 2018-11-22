@@ -49,6 +49,10 @@ $(document).ready(function(){
     console.log(file_name_ext);
 
     remove_layer(gpx);
+    remove_layer(hrHotlineLayer);
+    remove_layer(eleHotlineLayer);
+    remove_layer(tempHotlineLayer);
+    remove_layer(cadHotlineLayer);
     remove_layer(markers_layer);
     display_gpx(document.getElementById('demo'));
     //$.when( display_gpx(document.getElementById('demo')) ).done( draw_hotline_all() );
@@ -207,7 +211,7 @@ control.addBaseLayer(tempHotlineLayer, 'Temperature Line').addTo(mymap);
 function draw_hotline_cad() {
 cadHotlineLayer = L.hotline(cadcords, {
         min: 0,
-        max: 100,
+        max: 150,
         palette: {
             0.0: '#41ead4',
             0.5: '#fbff12',
