@@ -40,8 +40,8 @@ document.getElementById('get_file').onclick = function() {
 };
 
 document.getElementById('chart_file').onclick = function() {
-  display_chart(timecords, eledata, 'Elevation', 'myChart1');
-  display_chart(timecords, hrdata, 'HeartRate', 'myChart2');
+  display_chart(timecords, eledata, 'Elevation', 'myChart1', 'teal');
+  display_chart(timecords, hrdata, 'Heart Rate', 'myChart2', 'SlateBlue');
 };
 
 $(document).ready(function(){
@@ -139,6 +139,10 @@ var new_gpx = new L.GPX(url, {
   loadXMLDoc();
 
 }).addTo(mymap);
+
+document.getElementById("layers-buttons-group").style.display = "block";
+document.getElementById("myChart1").style.display = "none";
+document.getElementById("myChart2").style.display = "none";
 
 }
 
@@ -336,11 +340,13 @@ function remove_layer(layer) {
 }
 
 
-function display_chart(inlabels, indata, inchartlabel, inelement) {
+function display_chart(inlabels, indata, inchartlabel, inelement, incolor) {
   console.log(indata);
   console.log(inlabels);
+  document.getElementById(inelement).style.display = "block";
+  document.getElementById(inelement).innerHTML = "";
   var ctx = document.getElementById(inelement).getContext('2d');
-  var myChart = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'line',
     data: {
         //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -350,8 +356,8 @@ function display_chart(inlabels, indata, inchartlabel, inelement) {
             label: inchartlabel,
             data: indata,
             fill: false,
-            borderColor: 'red',
-            backgroundColor: 'red',
+            borderColor: incolor,
+            backgroundColor: incolor,
         }]
     },
     options: {

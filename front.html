@@ -26,26 +26,38 @@
 
 <section class="text-center">
     <div class="container">  
+        <a href="front.html" class="btn btn-dark my-2" style="width: 130px">Single</a>
+        <a href="compare.html" class="btn btn-dark my-2" style="width: 130px">Compare</a>
+    </div>
+</section>
+
+<section class="text-center">
+    <div class="container">  
       <p>
-        <a href="front.html" class="btn btn-primary my-2" style="width: 130px">Single</a>
-        <a href="compare.html" class="btn btn-primary my-2" style="width: 130px">Compare</a><br>
-        <button type="button" class="btn btn-outline-warning" style="width: 130px" onclick="draw_hotline_all()" id="All-layers-button">All Layers</button>
-        <button type="button" id="get_file" class="btn btn-outline-primary" style="width: 130px">Import & Plot</button>
+        <button type="button" id="get_file" class="btn btn-primary" style="width: 265px">Import & Plot</button>
         <input type="file" id="gpx_file" accept=".gpx">
-        <button type="button" class="btn btn-outline-primary" style="width: 130px"id="chart_file">Chart</button>
-        <button type="button" class="btn btn-outline-warning" style="width: 130px" onclick="draw_markers()" id="All-markers-button">All Markers</button>
       </p>
     </div>
-  </section>
+</section>
+
+<section class="text-center" id="layers-buttons-group" style="display: none">
+  <div class="container">
+    <p>
+        <button type="button" class="btn btn-danger" style="width: 265px"id="chart_file">Chart</button>
+        <button type="button" class="btn btn-warning" style="width: 265px" onclick="draw_hotline_all()" id="All-layers-button">Layers</button>
+        <button type="button" class="btn btn-success" style="width: 265px" onclick="draw_markers()" id="All-markers-button">Markers</button>
+    </p>
+  </div>
+</section>
 
 
-<section class="text-center" style="padding-bottom: 20px">  
+<!-- <section class="text-center" style="padding-bottom: 20px">  
     <div class="btn-group">
       <button class="button" style="width: 130px">Running</button>
       <button class="button" style="width: 130px">Cycling</button>
       <button class="button" style="width: 130px">Hiking</button>
     </div>
-</section>
+</section> -->
 
 
 <!-- <div class="container-fluid">
@@ -117,34 +129,24 @@
       <div class="card mb-2 shadow-sm" style="background-color:#E8E7EF; width: 100%; height: 100%">
         <div class="card-body">
           <div class="card-text">
-            <div class="row">
-              <div class="col-4" style="text-align: center">
-                  <a class="toggle">Heart Rate</a>
-                  <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                  </label>
-              </div>
-              <div class="col-4" style="text-align: center">
-                  <a class="toggle">Cadence</a>
-                  <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                  </label>
-              </div>
-              <div class="col-4" style="text-align: center">
-                  <a class="toggle">Elevation</a>
-                  <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                  </label>
-              </div>
+            <!-- <div class="row">
+              <div class="col-12" style="text-align: center">
+              <h4 style="text-align: center">Chart</h4>
             </div>
+            </div>
+            <div class="row">
+                <div class="col-6" style="text-align: center">
+                <button type="button" class="btn btn-dark" style="width: 130px" id="chart_elevation" onclick="display_chart(timecords, eledata, 'Elevation', 'myChart1')">Elevation</button>
+                </div>
+                <div class="col-6" style="text-align: center">
+                    <button type="button" class="btn btn-dark" style="width: 130px" id="chart_elevation" onclick="display_chart(timecords, hrdata, 'Heart Rate', 'myChart1')">Heart Rate</button>
+                </div>
+            </div> -->
           <div class="container" style="padding-top: 4%">
             <div class="row">
               <div class="col-8" style="text-align: right; padding-top: 6%">
-                <h3>Heart Rate</h3>
-                <span class="avghr"></span>&nbsp;bpm
+                <h3 style="color: indigo; font-weight: bold">Heart Rate</h3>
+                <p style="color: teal; font-weight: bold"><span class="avghr"></span>&nbsp;bpm</p>
               </div>
               <div class="col-4">
                   <img src="https://image.flaticon.com/icons/svg/210/210521.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px;">
@@ -152,8 +154,8 @@
             </div>
             <div class="row">
                 <div class="col-8" style="text-align: right; padding-top: 6%">
-                    <h3>Cadence</h3>
-                    <span class="avgcad"></span>&nbsp;cad
+                    <h3 style="color: indigo; font-weight: bold">Cadence</h3>
+                    <p style="color: teal; font-weight: bold"><span class="avgcad"></span>&nbsp;cad</p>
                 </div>
                 <div class="col-4">
                   <img src="https://image.flaticon.com/icons/svg/670/670750.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
@@ -161,15 +163,15 @@
             </div>
             <div class="row">
                 <div class="col-8" style="text-align: right; padding-top: 6%">
-                    <h3>Elevation</h3>
-                    <span class="elevation-net"></span>&nbsp;m
+                    <h3 style="color: indigo; font-weight: bold">Elevation</h3>
+                    <p style="color: teal; font-weight: bold"><span class="elevation-net"></span>&nbsp;m</p>
                 </div>
                 <div class="col-4">
                   <img src="https://image.flaticon.com/icons/svg/1180/1180411.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
                 </div>
             </div>
             <div class="row">
-                <canvas id="myChart1" width="400" height="150"></canvas>
+                <canvas id="myChart1" width="400" height="250"></canvas>
             </div>
           </div>
         </div>
@@ -194,7 +196,7 @@
         <div class="card mb-2 shadow-sm" style="background-color:#E8E7EF; width: 100%; height: 100%">
           <div class="card-body">
             <div class="card-text">
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-4" style="text-align: center">
                         <a class="toggle">Speed</a>
                         <label class="switch">
@@ -216,15 +218,15 @@
                           <span class="slider"></span>
                         </label>
                     </div>
-                  </div>
+                  </div> -->
             <div class="container" style="padding-top: 4%">
               <div class="row">
                 <div class="col-4">
                     <img src="https://image.flaticon.com/icons/svg/763/763965.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
                 </div>
                 <div class="col-8" style="text-align: left; padding-top: 6%">
-                    <h3>Speed</h3>
-                    <span class="speed"></span>&nbsp;km/hr
+                    <h3 style="color: indigo; font-weight: bold">Speed</h3>
+                    <p style="color: teal; font-weight: bold"><span class="speed"></span>&nbsp;km/hr</p>
                 </div>
               </div>
               <div class="row">
@@ -232,8 +234,8 @@
                       <img src="https://image.flaticon.com/icons/svg/55/55212.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
                   </div>
                   <div class="col-8" style="text-align: left; padding-top: 6%">
-                      <h3>Distance</h3>
-                      <span class="distance"></span>&nbsp;km
+                      <h3 style="color: indigo; font-weight: bold">Distance</h3>
+                      <p style="color: teal; font-weight: bold"><span class="distance"></span>&nbsp;km</p>
                   </div>
               </div>
               <div class="row">
@@ -241,13 +243,13 @@
                       <img src="https://image.flaticon.com/icons/svg/149/149318.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px">
                   </div>
                   <div class="col-8" style="text-align: left; padding-top: 6%">
-                      <h3>Duration</h3>
-                      <span class="duration"></span>&nbsp;
+                      <h3 style="color: indigo; font-weight: bold">Duration</h3>
+                      <p style="color: teal; font-weight: bold"><span class="duration"></span>&nbsp;</p>
                   </div>
               </div>
             </div>
             <div class="row">
-                <canvas id="myChart2" width="400" height="150"></canvas>
+                <canvas id="myChart2" width="400" height="250"></canvas>
             </div>
           </div>
           </div>
@@ -325,6 +327,7 @@
 
 
 <!-- <script src="https://rawgithub.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script> -->
+<script src="Scripts/snake.js"></script>
 <script src="Scripts/gpx.js"></script>
 <script src="Scripts/hotline.js"></script>
 <script src="Scripts/coords.js"></script>
