@@ -484,6 +484,12 @@ function remove_layer(layer, map, control) {
 }
 
 function compare_gpx(elt, gpx, gpx2) {
+
+  if (!gpx || !gpx2) {
+    alert('You need to upload two files for comparison, please make sure you have selected two files');
+    return;
+  }
+  
     function _t(t) { return elt.getElementsByTagName(t)[0]; }
     function _c(c) { return elt.getElementsByClassName(c)[0]; }
 
@@ -501,21 +507,21 @@ function compare_gpx(elt, gpx, gpx2) {
     ctemperaturetotal = gpx.get_average_temp() + gpx2.get_average_temp();
     celevationtotal = (gpx.get_elevation_gain().toFixed(2) - gpx.get_elevation_loss().toFixed(2)) + (gpx2.get_elevation_gain().toFixed(2) - gpx2.get_elevation_loss().toFixed(2));
 
-    cdistance1 = (gpx.get_distance()/1000).toFixed(2) / cdistancetotal;
-    cduration1 = gpx.get_moving_time() / cdurationtotal;
-    cspeed1 = gpx.get_moving_speed().toFixed(2) / cspeedtotal;
-    cheartrate1 = gpx.get_average_hr() / cheartratetotal;
-    ccadence1 = gpx.get_average_cadence() / ccadencetotal;
-    ctemperature1 = gpx.get_average_temp() / ctemperaturetotal;
-    celevation1 = (gpx.get_elevation_gain().toFixed(2) - gpx.get_elevation_loss().toFixed(2)) / celevationtotal;
+    cdistance1 = ((gpx.get_distance()/1000).toFixed(2) * 100 / cdistancetotal).toFixed(2);
+    cduration1 = (gpx.get_moving_time() * 100 / cdurationtotal).toFixed(2);
+    cspeed1 = (gpx.get_moving_speed().toFixed(2) * 100 / cspeedtotal).toFixed(2);
+    cheartrate1 = (gpx.get_average_hr() * 100 / cheartratetotal).toFixed(2);
+    ccadence1 = (gpx.get_average_cadence() * 100 / ccadencetotal).toFixed(2);
+    ctemperature1 = (gpx.get_average_temp() * 100 / ctemperaturetotal).toFixed(2);
+    celevation1 = ((gpx.get_elevation_gain().toFixed(2) - gpx.get_elevation_loss().toFixed(2)) * 100 / celevationtotal).toFixed(2);
 
-    cdistance2 = (gpx2.get_distance()/1000).toFixed(2) / cdistancetotal;
-    cduration2 = gpx2.get_moving_time() / cdurationtotal;
-    cspeed2 = gpx2.get_moving_speed().toFixed(2) / cspeedtotal;
-    cheartrate2 = gpx2.get_average_hr() / cheartratetotal;
-    ccadence2 = gpx2.get_average_cadence() / ccadencetotal;
-    ctemperature2 = gpx2.get_average_temp() / ctemperaturetotal;
-    celevation2 = (gpx2.get_elevation_gain().toFixed(2) - gpx2.get_elevation_loss().toFixed(2)) / celevationtotal;
+    cdistance2 = ((gpx2.get_distance()/1000).toFixed(2) * 100 / cdistancetotal).toFixed(2);
+    cduration2 = (gpx2.get_moving_time() * 100 / cdurationtotal).toFixed(2);
+    cspeed2 = (gpx2.get_moving_speed().toFixed(2) * 100 / cspeedtotal).toFixed(2);
+    cheartrate2 = (gpx2.get_average_hr() * 100 / cheartratetotal).toFixed(2);
+    ccadence2 = (gpx2.get_average_cadence() * 100 / ccadencetotal).toFixed(2);
+    ctemperature2 = (gpx2.get_average_temp() * 100 / ctemperaturetotal).toFixed(2);
+    celevation2 = ((gpx2.get_elevation_gain().toFixed(2) - gpx2.get_elevation_loss().toFixed(2)) * 100 / celevationtotal).toFixed(2);
 
       _c('Comparison').innerHTML = 'Comparison';
       //console.log(gpx2.get_moving_time());
@@ -537,6 +543,22 @@ function compare_gpx(elt, gpx, gpx2) {
       _c('avgcad32').innerHTML   = ccadence2;
       _c('avgtemp32').innerHTML  = ctemperature2;
       _c('elevation-net32').innerHTML  = celevation2;
+
+
+      document.getElementById('progress1').style.width = cdistance1 + '%';
+      document.getElementById('progress2').style.width = cdistance2 + '%';
+      document.getElementById('progress3').style.width = cduration1 + '%';
+      document.getElementById('progress4').style.width = cduration2 + '%';
+      document.getElementById('progress5').style.width = cspeed1 + '%';
+      document.getElementById('progress6').style.width = cspeed2 + '%';
+      document.getElementById('progress7').style.width = cheartrate1 + '%';
+      document.getElementById('progress8').style.width = cheartrate2 + '%';
+      document.getElementById('progress9').style.width = ccadence1 + '%';
+      document.getElementById('progress10').style.width = ccadence2 + '%';
+      document.getElementById('progress11').style.width = ctemperature1 + '%';
+      document.getElementById('progress12').style.width = ctemperature2 + '%';
+      document.getElementById('progress13').style.width = celevation1 + '%';
+      document.getElementById('progress14').style.width = celevation2 + '%';
 
 }
 
