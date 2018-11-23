@@ -344,6 +344,7 @@ return x < 50     ?    '#bd0026':
 
 
 function draw_markers() {
+  remove_layer(markers_layer);
 markers_layer = L.layerGroup([]);
 
 for (b = 0; b < plotcords.length; b += 10) {
