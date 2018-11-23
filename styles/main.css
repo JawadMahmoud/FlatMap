@@ -84,3 +84,8 @@ img {
     width: 100%;
     height: auto;
 }
+
+#file_success_alert {
+  top : 5px;
+  right : 5px;
+}

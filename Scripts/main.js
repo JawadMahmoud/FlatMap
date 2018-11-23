@@ -34,6 +34,35 @@ id: 'mapbox.light'
 }).addTo(mymap);
 var control = L.control.layers(null, null).addTo(mymap);
 
+
+$(document).ready(function(){
+  $('#get_file').tooltip('show'); 
+  //document.getElementsByClassName("leaflet-control-layers-toggle").id = "MapControl";
+  //document.getElementsByClassName("leaflet-control-layers-toggle").title = "Check here for Different Layers and Markers";
+  //$('.leaflet-control-layers-toggle').tooltip('show'); 
+  //console.log(document.getElementsByClassName("leaflet-control-layers-toggle").title);
+  //$('.leaflet-control-layers')
+});
+
+$('#get_file').click(function() {
+  $('#get_file').tooltip('hide');
+});
+
+$('#chart_file').click(function() {
+  $('#chart_file').tooltip('hide');
+});
+$('#All-layers-button').click(function() {
+  $('#All-layers-button').tooltip('hide');
+  $('.leaflet-control-layers-toggle').tooltip('show'); 
+});
+$('#All-markers-button').click(function() {
+  $('#All-markers-button').tooltip('hide');
+  $('.leaflet-control-layers-toggle').tooltip('show'); 
+});
+$('.leaflet-control-layers-toggle').hover(function() {
+  $('.leaflet-control-layers-toggle').tooltip('hide');
+});
+
 document.getElementById('get_file').onclick = function() {
   document.getElementById('gpx_file').click();
   //display_gpx(document.getElementById('demo'));
@@ -141,6 +170,10 @@ var new_gpx = new L.GPX(url, {
 }).addTo(mymap);
 
 document.getElementById("layers-buttons-group").style.display = "block";
+$('#chart_file').tooltip('show');
+$('#All-layers-button').tooltip('show'); 
+$('#All-markers-button').tooltip('show'); 
+$('#file_success_alert').show();
 document.getElementById("myChart1").style.display = "none";
 document.getElementById("myChart2").style.display = "none";
 
