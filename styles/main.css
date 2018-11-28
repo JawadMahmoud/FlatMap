@@ -1,3 +1,10 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 #gpx_file {
     display: none;
 }
@@ -88,4 +95,8 @@ img {
 #file_success_alert {
   top : 5px;
   right : 5px;
+}
+
+.leaflet-control-layers-toggle {
+  display: none;
 }
