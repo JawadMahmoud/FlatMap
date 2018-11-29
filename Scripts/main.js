@@ -31,6 +31,8 @@ var eleHotlineMarkers, hrHotlineMarkers, cadHotlineMarkers, tempHotlineMarkers;
 
 var eleicon, hricon, cadicon, tempicon;
 
+var chart_left, chart_right;
+
 // var minhrpic, midhrpic, maxhrpic = "Icons/heart1.png"; "Icons/heart2.png"; "Icons/heart3.png";
 // var minelepic, midelepic, maxelepic = "Icons/hill1.png"; "Icons/hill2.png"; "Icons/hill3.png";
 // var mincadpic, midcadpic, maxcadpic = "Icons/cad1.png"; "Icons/cad2.png"; "Icons/cad3.png";
@@ -225,8 +227,19 @@ var new_gpx = new L.GPX(url, {
 
   loadXMLDoc();
   window.setTimeout(function(){draw_hotline_all();
-    display_chart(timecords, eledata, 'Elevation', 'myChart1', 'teal',  "card-to-left");
-    display_chart(timecords, hrdata, 'Heart Rate', 'myChart2', 'purple', "card-to-right");}, 300);
+    if (chart_left) {
+      //removeChartData(chart_left);
+      //console.log("Destroy left chart");
+      chart_left.destroy();
+    }
+    if (chart_right) {
+      //removeChartData(chart_right);
+      chart_right.destroy();
+    }
+    //console.log(chart_left);
+    chart_left = display_chart(timecords, eledata, 'Elevation', 'myChart1', 'teal',  "card-to-left");
+    //console.log(chart_left);
+    chart_right = display_chart(timecords, hrdata, 'Heart Rate', 'myChart2', 'purple', "card-to-right");}, 300);
 
 }).addTo(mymap);
 
@@ -478,7 +491,7 @@ function display_chart(inlabels, indata, inchartlabel, inelement, incolor, incar
   document.getElementById(inelement).innerHTML = "";
   document.getElementById(incard).style.marginTop = "4%"
   var ctx = document.getElementById(inelement).getContext('2d');
-  new Chart(ctx, {
+  var chart_plot = new Chart(ctx, {
     type: 'line',
     data: {
         //labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -513,6 +526,15 @@ function display_chart(inlabels, indata, inchartlabel, inelement, incolor, incar
         }
     }
 });
+return chart_plot;
+}
+
+function removeChartData(chart) {
+  chart.data.labels.pop();
+  chart.data.datasets.forEach((dataset) => {
+      dataset.data.pop();
+  });
+  chart.update();
 }
 
 
