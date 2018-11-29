@@ -3,7 +3,7 @@
 var url;
 var gpx;
 var file_name_ext, uploaded_file;
-var avgtemp;
+var avgtemp, avgcad;
 
 var plotcords;
 var elecords;
@@ -23,6 +23,7 @@ var ele_max;
 var marker_list;
 var markers_layer;
 var markersLayerG;
+var invis_marker_iter, marker_iter;
 
 var eleHotlineLayer, hrHotlineLayer, cadHotlineLayer, tempHotlineLayer;
 var eleHotlineLayerG, hrHotlineLayerG, cadHotlineLayerG, tempHotlineLayerG;
@@ -113,7 +114,7 @@ document.getElementById('get_file').onclick = function() {
 
 document.getElementById('chart_file').onclick = function() {
   display_chart(timecords, eledata, 'Elevation', 'myChart1', 'teal');
-  display_chart(timecords, hrdata, 'Heart Rate', 'myChart2', 'SlateBlue');
+  display_chart(timecords, hrdata, 'Heart Rate', 'myChart2', 'red');
 };
 
 // $(document).on('charts_event', function() {
@@ -143,6 +144,10 @@ $(document).ready(function(){
     remove_layer(cadHotlineLayerG);
     display_gpx(document.getElementById('demo'));
     //$.when( display_gpx(document.getElementById('demo')) ).done( draw_hotline_all() );
+    $("#hr_layer_button").attr('class', 'btn btn-outline-danger');
+    $("#ele_layer_button").attr('class', 'btn btn-outline-warning');
+    $("#temp_layer_button").attr('class', 'btn btn-outline-info');
+    $("#cad_layer_button").attr('class', 'btn btn-outline-success');
   });
 });
 
@@ -221,7 +226,7 @@ var new_gpx = new L.GPX(url, {
   loadXMLDoc();
   window.setTimeout(function(){draw_hotline_all();
     display_chart(timecords, eledata, 'Elevation', 'myChart1', 'teal',  "card-to-left");
-    display_chart(timecords, hrdata, 'Heart Rate', 'myChart2', 'SlateBlue', "card-to-right");}, 200);
+    display_chart(timecords, hrdata, 'Heart Rate', 'myChart2', 'purple', "card-to-right");}, 300);
 
 }).addTo(mymap);
 
@@ -247,10 +252,14 @@ function draw_hotline_all() {
   if (hrcords.length != 0) {
     draw_hotline_hr();
     $('#hr_layer_button').show();
+  } else {
+    $('#hr_layer_button').hide();
   }
   if (elecords.length != 0) {
     draw_hotline_ele();
     $('#ele_layer_button').show();
+  } else {
+    $('#ele_layer_button').hide();
   }
   if (tempcords.length != 0) {
     draw_hotline_temp();
@@ -261,10 +270,17 @@ function draw_hotline_all() {
     document.getElementById("avg_cad").innerText = avgtemp;
     document.getElementById('cad_unit').innerText = "°C";
     document.getElementById('cad_img').src = "https://image.flaticon.com/icons/svg/134/134125.svg";
+  } else {
+    document.getElementById('cad_header').innerText = "Average Cadence";
+    document.getElementById('cad_unit').innerText = "cad";
+    document.getElementById('cad_img').src = "https://image.flaticon.com/icons/svg/670/670750.svg";
+    $('#temp_layer_button').hide();
   }
   if (cadcords.length != 0) {
     draw_hotline_cad();
     $('#cad_layer_button').show();
+  } else {
+    $('#cad_layer_button').hide();
   }
   
 }
@@ -455,6 +471,9 @@ function remove_layer(layer) {
 function display_chart(inlabels, indata, inchartlabel, inelement, incolor, incard) {
   console.log(indata);
   console.log(inlabels);
+  for (i=0; i<indata.length; i++) {
+    indata[i] = indata[i].toFixed(2);
+  }
   document.getElementById(inelement).style.display = "block";
   document.getElementById(inelement).innerHTML = "";
   document.getElementById(incard).style.marginTop = "4%"
@@ -470,10 +489,20 @@ function display_chart(inlabels, indata, inchartlabel, inelement, incolor, incar
             data: indata,
             fill: false,
             borderColor: incolor,
+            borderWidth: 2,
             backgroundColor: incolor,
+            pointHitRadius: 5,
         }]
     },
     options: {
+      tooltips: {
+        displayColors: false
+      },
+      elements: {
+        point: {
+          radius: 0
+        }
+      },
         responsive: true,
         scales: {
             yAxes: [{
@@ -493,17 +522,53 @@ function all_marker_groups() {
   if (cadcords.length != 0) {cadHotlineLayerG = []}
   if (tempcords.length != 0) {tempHotlineLayerG = []}
   markersLayerG = [];
+  invis_marker_iter = 0;
+  marker_iter = 0;
+  if(plotcords.length < 1000) {
+    marker_iter = 25;
+    invis_marker_iter = 2;
+  } else {
+    if(plotcords.length < 5000) {
+      marker_iter = 75;
+      invis_marker_iter = 5;
+    } else {
+      marker_iter = 250;
+      invis_marker_iter = 10;
+    }
+  }
 
-  for (j = 0; j < plotcords.length; j += 10) {
+  for (j = 0; j < plotcords.length; j += invis_marker_iter) {
     var invisiblemarker = L.marker(plotcords[j], { riseOnHover : 'true', icon : L.icon({ iconUrl : 'Icons/blank2.png', iconSize : [5,5], iconAnchor : [2.5,5]})});
-    invisiblemarker.bindTooltip(
-      "<b>Elevation: </b>" + eledata[j].toFixed(2) + "<br />" +
-      "<b>Heart Rate: </b>" + hrdata[j].toFixed(2) + "<br />" +
-      "<b>Temperature: </b>" + tempdata[j] + "<br />" +
-      "<b>Cadence: </b>" + caddata[j] + "<br />"
-    );
+    if (tempdata.length != 0 && caddata.length != 0) {
+      invisiblemarker.bindTooltip(
+        "<b>Elevation: </b>" + eledata[j].toFixed(2) + "<br />" +
+        "<b>Heart Rate: </b>" + hrdata[j].toFixed(2) + "<br />" +
+        "<b>Temperature: </b>" + tempdata[j] + "<br />" +
+        "<b>Cadence: </b>" + caddata[j] + "<br />"
+      );
+    }
+    if (tempdata.length == 0 && caddata.length != 0) {
+      invisiblemarker.bindTooltip(
+        "<b>Elevation: </b>" + eledata[j].toFixed(2) + "<br />" +
+        "<b>Heart Rate: </b>" + hrdata[j].toFixed(2) + "<br />" +
+        "<b>Cadence: </b>" + caddata[j] + "<br />"
+      );
+    }
+    if (tempdata.length != 0 && caddata.length == 0) {
+      invisiblemarker.bindTooltip(
+        "<b>Elevation: </b>" + eledata[j].toFixed(2) + "<br />" +
+        "<b>Heart Rate: </b>" + hrdata[j].toFixed(2) + "<br />" +
+        "<b>Temperature: </b>" + tempdata[j] + "<br />"
+      );
+    }
+    // invisiblemarker.bindTooltip(
+    //   "<b>Elevation: </b>" + eledata[j].toFixed(2) + "<br />" +
+    //   "<b>Heart Rate: </b>" + hrdata[j].toFixed(2) + "<br />" +
+    //   "<b>Temperature: </b>" + tempdata[j] + "<br />" +
+    //   "<b>Cadence: </b>" + caddata[j] + "<br />"
+    // );
     markersLayerG.push(invisiblemarker);
-    if (j % 100 == 0) {
+    if (j % marker_iter == 0) {
       if (elecords.length != 0) {
         if (eledata[j] < 50) {
           eleicon = 'Icons/hill1.png';
