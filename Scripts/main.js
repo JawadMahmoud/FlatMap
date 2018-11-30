@@ -44,7 +44,7 @@ maxZoom: 18,
 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
     '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-id: 'mapbox.light'
+id: 'mapbox.outdoors'
 }).addTo(mymap);
 var control = L.control.layers(null, null).addTo(mymap);
 
@@ -399,6 +399,9 @@ function myFunction(xml) {
 
         plotpoints = xmlDoc.getElementsByTagName("trkpt");
         timepoins = xmlDoc.getElementsByTagName("time");
+        if(xmlDoc.getElementsByTagName("bla").length) {
+          console.log("bad");
+        }
         //elelist = xmlDoc.getElementsByTagName("ele");
         for (i = 0; i < plotpoints.length; i++) {
             plotcords.push([Number(plotpoints[i].getAttribute('lat')), Number(plotpoints[i].getAttribute('lon'))]);
@@ -666,6 +669,7 @@ $('#temp_layer_button').hide();
 
 $("#hr_layer_button").click(function() {
   //event.preventDefault();
+  mymap.fitBounds(gpx.getBounds());
   if(mymap.hasLayer(hrHotlineLayerG)) {
       //$(this).removeClass('selected');
       $("#hr_layer_button").attr('class', 'btn btn-outline-danger');
@@ -692,6 +696,7 @@ $("#hr_layer_button").click(function() {
 
 $("#ele_layer_button").click(function() {
   //event.preventDefault();
+  mymap.fitBounds(gpx.getBounds());
   if(mymap.hasLayer(eleHotlineLayerG)) {
       //$(this).removeClass('selected');
       $("#ele_layer_button").attr('class', 'btn btn-outline-warning');
@@ -715,6 +720,7 @@ $("#ele_layer_button").click(function() {
 });
 
 $("#cad_layer_button").click(function() {
+  mymap.fitBounds(gpx.getBounds());
   //event.preventDefault();
   if(mymap.hasLayer(cadHotlineLayerG)) {
       //$(this).removeClass('selected');
@@ -739,6 +745,7 @@ $("#cad_layer_button").click(function() {
 });
 
 $("#temp_layer_button").click(function() {
+  mymap.fitBounds(gpx.getBounds());
   //event.preventDefault();
   if(mymap.hasLayer(tempHotlineLayerG)) {
       //$(this).removeClass('selected');

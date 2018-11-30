@@ -25,12 +25,12 @@
   </div>
 
 
-<section class="text-center">
+<!-- <section class="text-center">
     <div class="container">  
-        <!-- <a href="front.html" class="btn btn-dark my-2" style="width: 130px">Single</a> -->
+        <a href="front.html" class="btn btn-dark my-2" style="width: 130px">Single</a> -->
         <!-- <a href="compare.html" class="btn btn-dark my-2" style="width: 130px">Compare</a> -->
-    </div>
-</section>
+    <!-- </div>
+</section> -->
 
 <section class="text-center">
     <div class="container">  
@@ -45,7 +45,7 @@
 <div class="text-center">
     <div class="container">
         <p>
-        <button type="button" class="btn btn-outline-danger" style="width: 265px" id="hr_layer_button" data-html="true" data-placement="left" title="<p>Click to toggle gradient line for <b>Heart Rate</b> values <br><em>RED:</em> High<br><em>GOLD:</em> Medium<br><em>GREEN:</em> Low">Heart Rate</button>
+        <button type="button" aria-label="Import & Plot a GPX file" class="btn btn-outline-danger" style="width: 265px" id="hr_layer_button" data-html="true" data-placement="left" title="<p>Click to toggle gradient line for <b>Heart Rate</b> values <br><em>RED:</em> High<br><em>GOLD:</em> Medium<br><em>GREEN:</em> Low">Heart Rate</button>
         <button type="button" class="btn btn-outline-warning" style="width: 265px" id="ele_layer_button" data-html="true" data-placement="top" title="<p>Click to toggle gradient line for <b>Elevation</b> values <br><em>RED:</em> High<br><em>GOLD:</em> Medium<br><em>GREEN:</em> Low">Elevation</button>
         <button type="button" class="btn btn-outline-info" style="width: 265px" id="temp_layer_button" data-html="true" data-placement="bottom" title="<p>Click to toggle gradient line for <b>Temperature</b> values <br><em>RED:</em> High<br><em>GOLD:</em> Medium<br><em>GREEN:</em> Low">Temperature</button>
         <button type="button" class="btn btn-outline-success" style="width: 265px" id="cad_layer_button" data-html="true" data-placement="right" title="<p>Click to toggle gradient line for <b>Cadence</b> values <br><em>RED:</em> High<br><em>GOLD:</em> Medium<br><em>GREEN:</em> Low">Cadence</button>
@@ -79,7 +79,7 @@
                 <p style="color: teal; font-weight: bold"><span class="avghr"></span>&nbsp;bpm</p>
               </div>
               <div class="col-4">
-                  <img src="https://image.flaticon.com/icons/svg/210/210521.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px;" data-placement="right" title="Beats per minute">
+                  <img src="https://image.flaticon.com/icons/svg/210/210521.svg" alt="" class="mr-2 rounded" style="width: 100%; height: 100%; padding-bottom: 20px;" data-placement="right" title="Beats per minute">
               </div>
             </div>
             <div class="row">
@@ -88,7 +88,7 @@
                     <p style="color: teal; font-weight: bold"><span class="avgcad" id="avg_cad"></span>&nbsp;<span id="cad_unit">cad</span></p>
                 </div>
                 <div class="col-4">
-                  <img src="https://image.flaticon.com/icons/svg/670/670750.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px" id="cad_img" data-placement="right" title="Running: Steps per minute | Cycling: Rotations per minute">
+                  <img src="https://image.flaticon.com/icons/svg/670/670750.svg" alt="" class="mr-2 rounded" style="width: 100%; height: 100%; padding-bottom: 20px" id="cad_img" data-placement="right" title="Running: Steps per minute | Cycling: Rotations per minute">
                 </div>
             </div>
             <div class="row">
@@ -97,11 +97,11 @@
                     <p style="color: teal; font-weight: bold"><span class="elevation-net"></span>&nbsp;m</p>
                 </div>
                 <div class="col-4">
-                  <img src="https://image.flaticon.com/icons/svg/1180/1180411.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px" data-placement="right" title="metres">
+                  <img src="https://image.flaticon.com/icons/svg/1180/1180411.svg" alt="" class="mr-2 rounded" style="width: 100%; height: 100%; padding-bottom: 20px" data-placement="right" title="metres">
                 </div>
             </div>
             <div class="row">
-                <canvas id="myChart1" width="400" height="250"></canvas>
+                <canvas id="myChart1" width="100%"></canvas>
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@
             <div class="container" style="padding-top: 4%">
               <div class="row" style="margin-top: 30%"  id="card-to-right">
                 <div class="col-4">
-                    <img src="https://image.flaticon.com/icons/svg/763/763965.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px" data-placement="right" title="kilometres/hour">
+                    <img src="https://image.flaticon.com/icons/svg/763/763965.svg" alt="" class="mr-2 rounded" style="width: 100%; height: 100%; padding-bottom: 20px" data-placement="right" title="kilometres/hour">
                 </div>
                 <div class="col-8" style="text-align: left; padding-top: 6%">
                     <h4 style="color: indigo; font-weight: bold">Average Speed</h4>
@@ -138,7 +138,7 @@
               </div>
               <div class="row">
                   <div class="col-4">
-                      <img src="https://image.flaticon.com/icons/svg/55/55212.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px" data-placement="right" title="kilometres">
+                      <img src="https://image.flaticon.com/icons/svg/55/55212.svg" alt="" class="mr-2 rounded" style="width: 100%; height: 100%; padding-bottom: 20px" data-placement="right" title="kilometres">
                   </div>
                   <div class="col-8" style="text-align: left; padding-top: 6%">
                       <h4 style="color: indigo; font-weight: bold">Total Distance</h4>
@@ -147,7 +147,7 @@
               </div>
               <div class="row">
                   <div class="col-4">
-                      <img src="https://image.flaticon.com/icons/svg/149/149318.svg" alt="" class="mr-2 rounded" style="width: 120px; height: 120px; padding-bottom: 20px" data-placement="right" title="hours:minutes'seconds''">
+                      <img src="https://image.flaticon.com/icons/svg/149/149318.svg" alt="" class="mr-2 rounded" style="width: 100%; height: 100%; padding-bottom: 20px" data-placement="right" title="hours:minutes'seconds''">
                   </div>
                   <div class="col-8" style="text-align: left; padding-top: 6%">
                       <h4 style="color: indigo; font-weight: bold">Total Duration</h4>
@@ -156,7 +156,7 @@
               </div>
             </div>
             <div class="row">
-                <canvas id="myChart2" width="400" height="250"></canvas>
+                <canvas id="myChart2" width="100%"></canvas>
             </div>
           </div>
           </div>
