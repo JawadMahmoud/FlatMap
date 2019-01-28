@@ -275,7 +275,7 @@ function draw_hotline_ele() {
 		weight: 7,
 		outlineColor: '#000000',
 		outlineWidth: 1
-	})
+	});
 
 	eleHotlineLayerG.push(eleHotlineLayer);
 	eleHotlineLayerG = L.layerGroup(eleHotlineLayerG);
@@ -295,7 +295,7 @@ function draw_hotline_hr() {
 		weight: 7,
 		outlineColor: '#000000',
 		outlineWidth: 1
-	})
+	});
 
 	hrHotlineLayerG.push(hrHotlineLayer);
 	hrHotlineLayerG = L.layerGroup(hrHotlineLayerG);
@@ -315,7 +315,7 @@ function draw_hotline_temp() {
 		weight: 7,
 		outlineColor: '#000000',
 		outlineWidth: 1
-	})
+	});
 
 	tempHotlineLayerG.push(tempHotlineLayer);
 	tempHotlineLayerG = L.layerGroup(tempHotlineLayerG);
@@ -335,7 +335,7 @@ function draw_hotline_cad() {
 		weight: 7,
 		outlineColor: '#000000',
 		outlineWidth: 1
-	})
+	});
 
 	cadHotlineLayerG.push(cadHotlineLayer);
 	cadHotlineLayerG = L.layerGroup(cadHotlineLayerG);
@@ -396,7 +396,7 @@ function myFunction(xml) {
 			]);
 		}
 		timecords.push((timepoins[i].childNodes[0].nodeValue)
-			.substring(11, 19))
+			.substring(11, 19));
 
 	}
 
@@ -476,7 +476,7 @@ function display_chart(inlabels, indata, inchartlabel, inelement,
 	}
 	document.getElementById(inelement).style.display = "block";
 	document.getElementById(inelement).innerHTML = "";
-	document.getElementById(incard).style.marginTop = "4%"
+	document.getElementById(incard).style.marginTop = "4%";
 	var ctx = document.getElementById(inelement).getContext('2d');
 	var chart_plot = new Chart(ctx, {
 		type: 'line',
@@ -516,26 +516,26 @@ function display_chart(inlabels, indata, inchartlabel, inelement,
 	return chart_plot;
 }
 
-function removeChartData(chart) {
-	chart.data.labels.pop();
-	chart.data.datasets.forEach((dataset) => {
-		dataset.data.pop();
-	});
-	chart.update();
-}
+// function removeChartData(chart) {
+// 	chart.data.labels.pop();
+// 	chart.data.datasets.forEach((dataset) => {
+// 		dataset.data.pop();
+// 	});
+// 	chart.update();
+// }
 
 function all_marker_groups() {
 	if (elecords.length != 0) {
-		eleHotlineLayerG = []
+		eleHotlineLayerG = [];
 	}
 	if (hrcords.length != 0) {
-		hrHotlineLayerG = []
+		hrHotlineLayerG = [];
 	}
 	if (cadcords.length != 0) {
-		cadHotlineLayerG = []
+		cadHotlineLayerG = [];
 	}
 	if (tempcords.length != 0) {
-		tempHotlineLayerG = []
+		tempHotlineLayerG = [];
 	}
 	markersLayerG = [];
 	invis_marker_iter = 0;

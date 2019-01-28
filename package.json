@@ -1,0 +1,36 @@
+{
+  "name": "flatmap",
+  "version": "1.0.25",
+  "description": "Tool for visualizing GPX file data and viewing summary statistics",
+  "main": "index.js",
+  "dependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-jshint": "^2.0.0",
+    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-processhtml": "^0.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JawadMahmoud/FlatMap.git"
+  },
+  "keywords": [
+    "GPX",
+    "Map",
+    "GPS",
+    "Visualise",
+    "Statistics"
+  ],
+  "author": "Jawad Mahmoud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JawadMahmoud/FlatMap/issues"
+  },
+  "homepage": "https://github.com/JawadMahmoud/FlatMap#readme"
+}
