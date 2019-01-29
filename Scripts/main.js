@@ -1,36 +1,35 @@
+
+
+// File import variables
 var url;
 var gpx;
 var file_name_ext, uploaded_file;
+
+// Coordinates and each type of data parsed from the GPX xml file
+var plotcords;var elecords;var hrcords;var tempcords;var cadcords;var timecords;
+
+// Processed data of each type
+var hrdata;var eledata;var tempdata;var caddata;
+
+// average data calculated
+var ele_min;var ele_max;
 var avgtemp, avgcad;
 
-var plotcords;
-var elecords;
-var hrcords;
-var tempcords;
-var cadcords;
-var timecords;
+// Markers for each data type
+var marker_list;var markers_layer;var markersLayerG;var invis_marker_iter, marker_iter;
 
-var hrdata;
-var eledata;
-var tempdata;
-var caddata;
-
-var ele_min;
-var ele_max;
-
-var marker_list;
-var markers_layer;
-var markersLayerG;
-var invis_marker_iter, marker_iter;
-
+// Variables for storing and using Hotline Layer plugin properly
 var eleHotlineLayer, hrHotlineLayer, cadHotlineLayer, tempHotlineLayer;
 var eleHotlineLayerG, hrHotlineLayerG, cadHotlineLayerG, tempHotlineLayerG;
 var eleHotlineMarkers, hrHotlineMarkers, cadHotlineMarkers, tempHotlineMarkers;
 
+// Icons to be imported
 var eleicon, hricon, cadicon, tempicon;
 
+// Charts on either side of the page
 var chart_left, chart_right;
 
+// Initialise the Leaflet Map
 var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 L.tileLayer(
 	'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiamF3YWRzaGFoaWQiLCJhIjoiY2puZzQ0eno3MDRjbDNrcWlsZjZxNTcxaSJ9.mavbvckNOMnntmxWcKboyQ', {
@@ -41,6 +40,8 @@ L.tileLayer(
 		id: 'mapbox.outdoors'
 	}).addTo(mymap);
 var control = L.control.layers(null, null).addTo(mymap);
+
+// Functions for showing/hiding Tooltips and initialising the web page ->>>>>
 
 $(document).ready(function() {
 	$('#right_column').hide();
@@ -84,6 +85,8 @@ $('.leaflet-control-layers-toggle').hover(function() {
 });
 $('.leaflet-control-layers-toggle').hide();
 
+// <<<<<-
+
 document.getElementById('get_file').onclick = function() {
 	document.getElementById('gpx_file').click();
 };
@@ -94,6 +97,8 @@ document.getElementById('chart_file').onclick = function() {
 	display_chart(timecords, hrdata, 'Heart Rate', 'myChart2',
 		'red');
 };
+
+// When a file is loaded into the, run all functions to show all page elements and parse the xml ->>>>> 
 
 $(document).ready(function() {
 	$("#gpx_file").on('change', function() {
@@ -129,6 +134,10 @@ $(document).ready(function() {
 	});
 });
 
+// <<<<<-
+
+
+// Function for initializing the Leaflet GPX plugin, parses all data and displays charts ->>>>>
 function display_gpx(elt) {
 
 	if (!elt) return;
@@ -218,6 +227,10 @@ function display_gpx(elt) {
 
 }
 
+// <<<<<-
+
+// Initialise all the Leaflet Hotline functions defined below, for generating the gradient lines for each data type ->>>>>
+
 function draw_hotline_all() {
 	all_marker_groups();
 	remove_layer(hrHotlineLayer);
@@ -263,6 +276,10 @@ function draw_hotline_all() {
 
 }
 
+// <<<<<-
+
+// Initialise the Hotline for Elevation data ->>>>>
+
 function draw_hotline_ele() {
 	eleHotlineLayer = L.hotline(elecords, {
 		min: ele_min,
@@ -282,6 +299,8 @@ function draw_hotline_ele() {
 	control.addBaseLayer(eleHotlineLayerG, 'Elevation Line').addTo(
 		mymap);
 }
+
+// Initialise the Hotline for Elevation data ->>>>>
 
 function draw_hotline_hr() {
 	hrHotlineLayer = L.hotline(hrcords, {
@@ -303,6 +322,8 @@ function draw_hotline_hr() {
 		mymap);
 }
 
+// Initialise the Hotline for Elevation data ->>>>>
+
 function draw_hotline_temp() {
 	tempHotlineLayer = L.hotline(tempcords, {
 		min: 20,
@@ -323,6 +344,8 @@ function draw_hotline_temp() {
 		mymap);
 }
 
+// Initialise the Hotline for Elevation data ->>>>>
+
 function draw_hotline_cad() {
 	cadHotlineLayer = L.hotline(cadcords, {
 		min: 0,
@@ -342,6 +365,10 @@ function draw_hotline_cad() {
 	control.addBaseLayer(cadHotlineLayerG, 'Cadence Line').addTo(
 		mymap);
 }
+
+// <<<<<-
+
+// Parses the xml, loads all the data points into variables
 
 function loadXMLDoc() {
 	var xmlhttp = new XMLHttpRequest();
@@ -408,6 +435,8 @@ function myFunction(xml) {
 	console.log(cadcords);
 
 }
+
+// <<<<<-
 
 function printcords(cords) {
 	console.log("#2");
