@@ -30,5 +30,5 @@ grunt buildDemo
 
 ## Additional plugins utilized
 
-- https://github.com/iosphere/Leaflet.hotline
-- https://github.com/mpetazzoni/leaflet-gpx
+- [Leaflet Hotline](https://github.com/iosphere/Leaflet.hotline)
+- [Leaflet GPX](https://github.com/mpetazzoni/leaflet-gpx)
