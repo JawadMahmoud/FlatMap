@@ -27,3 +27,8 @@ grunt buildDemo
 ```
 
 - Then use the steps mentioned in the Demo section to launch the app from the `demo` directory
+
+## Additional plugins utilized
+
+- https://github.com/iosphere/Leaflet.hotline
+- https://github.com/mpetazzoni/leaflet-gpx
