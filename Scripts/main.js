@@ -87,8 +87,18 @@ $('.leaflet-control-layers-toggle').hide();
 
 // <<<<<-
 
+function random_demo() {
+	var allGPX = ['A.gpx', 'activity_1927428247.gpx', 'activity_1939704174.gpx', 'activity_1955980791.gpx', 'activity_1969416308.gpx',
+					'activity_1982749380.gpx', 'activity_1994493937.gpx', 'activity_2011170049.gpx', 'activity_2041180865.gpx', 'activity_2051947649.gpx',
+					'activity_2066330123.gpx', 'activity_2113490927.gpx', 'activity_2157967385.gpx', 'Lugano.gpx'];
+	var random_file = allGPX[Math.floor(Math.random()*allGPX.length)];
+	return random_file;
+}
+
 document.getElementById('get_file').onclick = function() {
-	document.getElementById('gpx_file').click();
+	// document.getElementById('gpx_file').click();
+	uploaded_file = random_demo();
+	run_demo();
 };
 
 document.getElementById('chart_file').onclick = function() {
@@ -100,39 +110,39 @@ document.getElementById('chart_file').onclick = function() {
 
 // When a file is loaded into the, run all functions to show all page elements and parse the xml ->>>>> 
 
-$(document).ready(function() {
-	$("#gpx_file").on('change', function() {
-		$('#right_column').show();
-		$('#left_column').show();
-		$('#middle_column').show();
-		uploaded_file = document.getElementById(
-			'gpx_file').value;
-		file_name_ext = uploaded_file.split('.').pop()
-			.toLowerCase();
-		if ('gpx' !== file_name_ext) {
-			alert(
-				"Incorrect file type, please upload a .gpx file");
-			return;
-		}
-		console.log(file_name_ext);
+// $(document).ready(function() {
+// 	$("#gpx_file").on('change', function() {
+function run_demo() {
+	$('#right_column').show();
+	$('#left_column').show();
+	$('#middle_column').show();
+	// uploaded_file = document.getElementById(
+	// 	'gpx_file').value;
+	file_name_ext = uploaded_file.split('.').pop()
+		.toLowerCase();
+	if ('gpx' !== file_name_ext) {
+		alert(
+			"Incorrect file type, please upload a .gpx file");
+		return;
+	}
+	console.log(file_name_ext);
 
-		remove_layer(gpx);
-		remove_layer(markersLayerG);
-		remove_layer(hrHotlineLayerG);
-		remove_layer(eleHotlineLayerG);
-		remove_layer(tempHotlineLayerG);
-		remove_layer(cadHotlineLayerG);
-		display_gpx(document.getElementById('demo'));
-		$("#hr_layer_button").attr('class',
-			'btn btn-outline-danger');
-		$("#ele_layer_button").attr('class',
-			'btn btn-outline-warning');
-		$("#temp_layer_button").attr('class',
-			'btn btn-outline-info');
-		$("#cad_layer_button").attr('class',
-			'btn btn-outline-success');
-	});
-});
+	remove_layer(gpx);
+	remove_layer(markersLayerG);
+	remove_layer(hrHotlineLayerG);
+	remove_layer(eleHotlineLayerG);
+	remove_layer(tempHotlineLayerG);
+	remove_layer(cadHotlineLayerG);
+	display_gpx(document.getElementById('demo'));
+	$("#hr_layer_button").attr('class',
+		'btn btn-outline-danger');
+	$("#ele_layer_button").attr('class',
+		'btn btn-outline-warning');
+	$("#temp_layer_button").attr('class',
+		'btn btn-outline-info');
+	$("#cad_layer_button").attr('class',
+		'btn btn-outline-success');
+}
 
 // <<<<<-
 
@@ -142,8 +152,10 @@ function display_gpx(elt) {
 
 	if (!elt) return;
 
-	url = "GPXFiles/" + document.getElementById('gpx_file').files[0]
-		.name;
+	// url = "GPXFiles/" + document.getElementById('gpx_file').files[0]
+	// 	.name;
+
+	url = "GPXFiles/" + uploaded_file;
 
 	function _t(t) {
 		return elt.getElementsByTagName(t)[0];
