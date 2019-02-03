@@ -6,6 +6,10 @@ To view and import files ensure that they are available in the GPXFiles folder i
 
 ## Demo
 
+### Live Demo
+[FlatMap GitHub Pages](https://jawadmahmoud.github.io/FlatMap/)
+
+### Build Locally
 - Switch to the `built-demo` branch on GitHub
 - Download the .zip file to get a local copy of the demo
 - Navigate to the download directory and extract the contents
